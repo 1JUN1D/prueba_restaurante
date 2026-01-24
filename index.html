@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reserva de Tacos</title>
+    <title>Reserva de Masajes</title>
     <style>
         * {
             margin: 0;
@@ -94,6 +94,11 @@
             transform: translateY(0);
         }
         
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
         #mensaje {
             margin-top: 20px;
             padding: 15px;
@@ -120,12 +125,33 @@
             color: #856404;
             border: 2px solid #ffeaa7;
         }
+        
+        .hora-ocupada {
+            background: #f8d7da !important;
+            color: #721c24 !important;
+            cursor: not-allowed !important;
+        }
+        
+        .hora-disponible {
+            background: #d4edda !important;
+            color: #155724 !important;
+        }
+        
+        .info-disponibilidad {
+            background: #e7f3ff;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #004085;
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="emoji">🌮</div>
-        <h1>Reserva tu Mesa</h1>
+        <div class="emoji">💆‍♀️</div>
+        <h1>Reserva tu Masaje</h1>
         
         <form id="reservaForm">
             <div class="form-group">
@@ -148,28 +174,32 @@
                 <input type="date" id="fechaReserva" name="fechaReserva" required>
             </div>
             
-            <div class="form-group">
-                <label for="hora">Hora *</label>
-                <input type="time" id="hora" name="hora" required>
+            <div class="info-disponibilidad" id="infoDisponibilidad">
+                Cargando disponibilidad...
             </div>
             
             <div class="form-group">
-                <label for="personas">Número de Personas *</label>
-                <select id="personas" name="personas" required>
+                <label for="hora">Hora *</label>
+                <select id="hora" name="hora" required>
+                    <option value="">Primero selecciona una fecha</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="tipoMasaje">Tipo de Masaje *</label>
+                <select id="tipoMasaje" name="tipoMasaje" required>
                     <option value="">Selecciona...</option>
-                    <option value="1">1 persona</option>
-                    <option value="2">2 personas</option>
-                    <option value="3">3 personas</option>
-                    <option value="4">4 personas</option>
-                    <option value="5">5 personas</option>
-                    <option value="6">6 personas</option>
-                    <option value="7+">7 o más</option>
+                    <option value="relajante">Masaje Relajante (60 min)</option>
+                    <option value="deportivo">Masaje Deportivo (60 min)</option>
+                    <option value="piedras">Masaje con Piedras Calientes (90 min)</option>
+                    <option value="sueco">Masaje Sueco (60 min)</option>
+                    <option value="tailandes">Masaje Tailandés (90 min)</option>
                 </select>
             </div>
             
             <div class="form-group">
                 <label for="comentarios">Comentarios adicionales</label>
-                <textarea id="comentarios" name="comentarios" placeholder="Alergias, preferencias, ocasión especial..."></textarea>
+                <textarea id="comentarios" name="comentarios" placeholder="Alergias, preferencias, zonas específicas..."></textarea>
             </div>
             
             <button type="submit">Confirmar Reserva</button>
@@ -178,50 +208,109 @@
         </form>
     </div>
 
-        
     <script>
-    // URL de tu Google Apps Script implementado
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxk18JzZr5cKZNFuA12UbfNjFoi5hXppjlH9fur2BBqizYqlBOLkWmDg0AlGYC-NX0T/exec';
-    
-    document.getElementById('reservaForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
+        // URL de tu Google Apps Script
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxk18JzZr5cKZNFuA12UbfNjFoi5hXppjlH9fur2BBqizYqlBOLkWmDg0AlGYC-NX0T/exec';
         
-        const mensaje = document.getElementById('mensaje');
-        const boton = e.target.querySelector('button');
+        // Horarios disponibles (de 9 AM a 8 PM)
+        const HORARIOS = [
+            '09:00', '10:00', '11:00', '12:00',
+            '13:00', '14:00', '15:00', '16:00',
+            '17:00', '18:00', '19:00', '20:00'
+        ];
         
-        // Mostrar loading
-        mensaje.style.display = 'block';
-        mensaje.className = 'loading';
-        mensaje.textContent = 'Enviando reserva...';
-        boton.disabled = true;
-        
-        // Recopilar datos
-        const formData = new FormData(this);
-        const data = Object.fromEntries(formData);
-        
-        try {
-            const response = await fetch(SCRIPT_URL, {
-                method: 'POST',
-                body: JSON.stringify(data)
-            });
+        // Cuando cambie la fecha, cargar disponibilidad
+        document.getElementById('fechaReserva').addEventListener('change', async function() {
+            const fecha = this.value;
+            const selectHora = document.getElementById('hora');
+            const infoDiv = document.getElementById('infoDisponibilidad');
             
-            // Mostrar éxito
-            mensaje.className = 'success';
-            mensaje.textContent = '✅ ¡Reserva confirmada! Recibirás un email de confirmación.';
-            this.reset();
+            if (!fecha) return;
             
-        } catch (error) {
-            // Mostrar error
-            mensaje.className = 'error';
-            mensaje.textContent = '❌ Error al enviar. Intenta nuevamente.';
-        } finally {
-            boton.disabled = false;
-        }
-    });
-    
-    // Establecer fecha mínima (hoy)
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('fechaReserva').setAttribute('min', today);
-</script>
+            // Mostrar loading
+            infoDiv.style.display = 'block';
+            infoDiv.textContent = 'Cargando disponibilidad...';
+            selectHora.disabled = true;
+            
+            try {
+                // Consultar horas ocupadas
+                const response = await fetch(`${SCRIPT_URL}?fecha=${fecha}`);
+                const data = await response.json();
+                
+                // Limpiar select
+                selectHora.innerHTML = '<option value="">Selecciona una hora...</option>';
+                
+                // Agregar horarios
+                let disponibles = 0;
+                HORARIOS.forEach(horario => {
+                    const option = document.createElement('option');
+                    option.value = horario;
+                    option.textContent = horario;
+                    
+                    // Marcar si está ocupado
+                    if (data.horasOcupadas.includes(horario)) {
+                        option.disabled = true;
+                        option.textContent = `${horario} - OCUPADO ❌`;
+                        option.classList.add('hora-ocupada');
+                    } else {
+                        option.textContent = `${horario} - Disponible ✅`;
+                        option.classList.add('hora-disponible');
+                        disponibles++;
+                    }
+                    
+                    selectHora.appendChild(option);
+                });
+                
+                // Mostrar info
+                infoDiv.textContent = `${disponibles} horarios disponibles para el ${fecha}`;
+                infoDiv.style.color = disponibles > 0 ? '#155724' : '#721c24';
+                infoDiv.style.background = disponibles > 0 ? '#d4edda' : '#f8d7da';
+                selectHora.disabled = false;
+                
+            } catch (error) {
+                infoDiv.textContent = 'Error al cargar disponibilidad';
+                infoDiv.style.background = '#f8d7da';
+                infoDiv.style.color = '#721c24';
+            }
+        });
+        
+        // Enviar formulario
+        document.getElementById('reservaForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const mensaje = document.getElementById('mensaje');
+            const boton = e.target.querySelector('button');
+            
+            mensaje.style.display = 'block';
+            mensaje.className = 'loading';
+            mensaje.textContent = 'Enviando reserva...';
+            boton.disabled = true;
+            
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                });
+                
+                mensaje.className = 'success';
+                mensaje.textContent = '✅ ¡Reserva confirmada! Te contactaremos pronto.';
+                this.reset();
+                document.getElementById('infoDisponibilidad').style.display = 'none';
+                
+            } catch (error) {
+                mensaje.className = 'error';
+                mensaje.textContent = '❌ Error al enviar. Intenta nuevamente.';
+            } finally {
+                boton.disabled = false;
+            }
+        });
+        
+        // Establecer fecha mínima (hoy)
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('fechaReserva').setAttribute('min', today);
+    </script>
 </body>
 </html>
