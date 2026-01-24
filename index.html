@@ -207,110 +207,126 @@
             <div id="mensaje"></div>
         </form>
     </div>
-
-    <script>
-        // URL de tu Google Apps Script
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxk18JzZr5cKZNFuA12UbfNjFoi5hXppjlH9fur2BBqizYqlBOLkWmDg0AlGYC-NX0T/exec';
-        
-        // Horarios disponibles (de 9 AM a 8 PM)
-        const HORARIOS = [
-            '09:00', '10:00', '11:00', '12:00',
-            '13:00', '14:00', '15:00', '16:00',
-            '17:00', '18:00', '19:00', '20:00'
-        ];
-        
-        // Cuando cambie la fecha, cargar disponibilidad
-        document.getElementById('fechaReserva').addEventListener('change', async function() {
-            const fecha = this.value;
-            const selectHora = document.getElementById('hora');
-            const infoDiv = document.getElementById('infoDisponibilidad');
+<script>
+    // URL de tu Google Apps Script
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxk18JzZr5cKZNFuA12UbfNjFoi5hXppjlH9fur2BBqizYqlBOLkWmDg0AlGYC-NX0T/exec';
+    
+    // Horarios disponibles (de 9 AM a 8 PM)
+    const HORARIOS = [
+        '09:00', '10:00', '11:00', '12:00',
+        '13:00', '14:00', '15:00', '16:00',
+        '17:00', '18:00', '19:00', '20:00'
+    ];
+    
+    // Función para hacer peticiones JSONP (evita problemas de CORS)
+    function fetchJSONP(url) {
+        return new Promise((resolve, reject) => {
+            const callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random());
             
-            if (!fecha) return;
+            window[callbackName] = function(data) {
+                delete window[callbackName];
+                document.body.removeChild(script);
+                resolve(data);
+            };
             
-            // Mostrar loading
-            infoDiv.style.display = 'block';
-            infoDiv.textContent = 'Cargando disponibilidad...';
-            selectHora.disabled = true;
-            
-            try {
-                // Consultar horas ocupadas
-                const response = await fetch(`${SCRIPT_URL}?fecha=${fecha}`);
-                const data = await response.json();
-                
-                // Limpiar select
-                selectHora.innerHTML = '<option value="">Selecciona una hora...</option>';
-                
-                // Agregar horarios
-                let disponibles = 0;
-                HORARIOS.forEach(horario => {
-                    const option = document.createElement('option');
-                    option.value = horario;
-                    option.textContent = horario;
-                    
-                    // Marcar si está ocupado
-                    if (data.horasOcupadas.includes(horario)) {
-                        option.disabled = true;
-                        option.textContent = `${horario} - OCUPADO ❌`;
-                        option.classList.add('hora-ocupada');
-                    } else {
-                        option.textContent = `${horario} - Disponible ✅`;
-                        option.classList.add('hora-disponible');
-                        disponibles++;
-                    }
-                    
-                    selectHora.appendChild(option);
-                });
-                
-                // Mostrar info
-                infoDiv.textContent = `${disponibles} horarios disponibles para el ${fecha}`;
-                infoDiv.style.color = disponibles > 0 ? '#155724' : '#721c24';
-                infoDiv.style.background = disponibles > 0 ? '#d4edda' : '#f8d7da';
-                selectHora.disabled = false;
-                
-            } catch (error) {
-                infoDiv.textContent = 'Error al cargar disponibilidad';
-                infoDiv.style.background = '#f8d7da';
-                infoDiv.style.color = '#721c24';
-            }
+            const script = document.createElement('script');
+            script.src = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'callback=' + callbackName;
+            script.onerror = reject;
+            document.body.appendChild(script);
         });
+    }
+    
+    // Cuando cambie la fecha, cargar disponibilidad
+    document.getElementById('fechaReserva').addEventListener('change', async function() {
+        const fecha = this.value;
+        const selectHora = document.getElementById('hora');
+        const infoDiv = document.getElementById('infoDisponibilidad');
         
-        // Enviar formulario
-        document.getElementById('reservaForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const mensaje = document.getElementById('mensaje');
-            const boton = e.target.querySelector('button');
-            
-            mensaje.style.display = 'block';
-            mensaje.className = 'loading';
-            mensaje.textContent = 'Enviando reserva...';
-            boton.disabled = true;
-            
-            const formData = new FormData(this);
-            const data = Object.fromEntries(formData);
-            
-            try {
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(data)
-                });
-                
-                mensaje.className = 'success';
-                mensaje.textContent = '✅ ¡Reserva confirmada! Te contactaremos pronto.';
-                this.reset();
-                document.getElementById('infoDisponibilidad').style.display = 'none';
-                
-            } catch (error) {
-                mensaje.className = 'error';
-                mensaje.textContent = '❌ Error al enviar. Intenta nuevamente.';
-            } finally {
-                boton.disabled = false;
-            }
-        });
+        if (!fecha) return;
         
-        // Establecer fecha mínima (hoy)
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('fechaReserva').setAttribute('min', today);
-    </script>
+        // Mostrar loading
+        infoDiv.style.display = 'block';
+        infoDiv.textContent = 'Cargando disponibilidad...';
+        selectHora.disabled = true;
+        
+        try {
+            // Consultar horas ocupadas usando JSONP
+            const data = await fetchJSONP(`${SCRIPT_URL}?fecha=${fecha}`);
+            
+            // Limpiar select
+            selectHora.innerHTML = '<option value="">Selecciona una hora...</option>';
+            
+            // Agregar horarios
+            let disponibles = 0;
+            HORARIOS.forEach(horario => {
+                const option = document.createElement('option');
+                option.value = horario;
+                option.textContent = horario;
+                
+                // Marcar si está ocupado
+                if (data.horasOcupadas.includes(horario)) {
+                    option.disabled = true;
+                    option.textContent = `${horario} - OCUPADO ❌`;
+                    option.classList.add('hora-ocupada');
+                } else {
+                    option.textContent = `${horario} - Disponible ✅`;
+                    option.classList.add('hora-disponible');
+                    disponibles++;
+                }
+                
+                selectHora.appendChild(option);
+            });
+            
+            // Mostrar info
+            infoDiv.textContent = `${disponibles} horarios disponibles para el ${fecha}`;
+            infoDiv.style.color = disponibles > 0 ? '#155724' : '#721c24';
+            infoDiv.style.background = disponibles > 0 ? '#d4edda' : '#f8d7da';
+            selectHora.disabled = false;
+            
+        } catch (error) {
+            infoDiv.textContent = 'Error al cargar disponibilidad';
+            infoDiv.style.background = '#f8d7da';
+            infoDiv.style.color = '#721c24';
+        }
+    });
+    
+    // Enviar formulario
+    document.getElementById('reservaForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const mensaje = document.getElementById('mensaje');
+        const boton = e.target.querySelector('button');
+        
+        mensaje.style.display = 'block';
+        mensaje.className = 'loading';
+        mensaje.textContent = 'Enviando reserva...';
+        boton.disabled = true;
+        
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData);
+        
+        try {
+            const response = await fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify(data)
+            });
+            
+            mensaje.className = 'success';
+            mensaje.textContent = '✅ ¡Reserva confirmada! Te contactaremos pronto.';
+            this.reset();
+            document.getElementById('infoDisponibilidad').style.display = 'none';
+            
+        } catch (error) {
+            mensaje.className = 'error';
+            mensaje.textContent = '❌ Error al enviar. Intenta nuevamente.';
+        } finally {
+            boton.disabled = false;
+        }
+    });
+    
+    // Establecer fecha mínima (hoy)
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('fechaReserva').setAttribute('min', today);
+</script>
 </body>
 </html>
