@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TACO GOD - Reservas | Buenos Aires</title>
+    <meta name="description" content="Reserva tu mesa en Taco God Buenos Aires. Los mejores tacos mexicanos desde 2021. Chacarita, Federico Lacroze 3522.">
+    
+    <!-- Preload fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="icon" type="image/png" href="imagen3.png">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-orange: #FF8C42;
+            --secondary-orange: #FFB366;
+            --dark-bg: #1A1A1A;
+            --light-bg: #FAFAFA;
+            --text-dark: #2D2D2D;
+            --text-light: #FFFFFF;
+            --accent-green: #4A9B8E;
+            --accent-teal: #6BB6C7;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 8px 30px rgba(255, 140, 66, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--light-bg);
+            overflow-x: hidden;
+        }
+
+        /* Header with animated taco icons */
+        .header {
+            position: relative;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #2D1B18 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            overflow: hidden;
+        }
+
+        .floating-tacos {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .taco-float {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            opacity: 0.15;
+            animation: float 8s ease-in-out infinite;
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        /* Positioning for floating tacos */
+        .taco-float:nth-child(1) { 
+            top: 15%; 
+            left: 8%; 
+            animation-delay: 0s; 
+            transform: rotate(15deg);
+            animation-duration: 7s;
+        }
+        .taco-float:nth-child(2) { 
+            top: 25%; 
+            right: 12%; 
+            animation-delay: 1.5s; 
+            transform: rotate(-20deg);
+            animation-duration: 9s;
+        }
+        .taco-float:nth-child(3) { 
+            bottom: 35%; 
+            left: 15%; 
+            animation-delay: 3s; 
+            transform: rotate(45deg);
+            animation-duration: 6s;
+        }
+        .taco-float:nth-child(4) { 
+            bottom: 25%; 
+            right: 8%; 
+            animation-delay: 4.5s; 
+            transform: rotate(-10deg);
+            animation-duration: 8s;
+        }
+        .taco-float:nth-child(5) { 
+            top: 60%; 
+            left: 3%; 
+            animation-delay: 6s; 
+            transform: rotate(30deg);
+            animation-duration: 7.5s;
+        }
+        .taco-float:nth-child(6) { 
+            top: 70%; 
+            right: 5%; 
+            animation-delay: 2s; 
+            transform: rotate(-35deg);
+            animation-duration: 6.5s;
+        }
+
+        @keyframes float {
+            0%, 100% { 
+                transform: translateY(0px) rotate(var(--rotation, 0deg)); 
+                opacity: 0.15;
+            }
+            33% { 
+                transform: translateY(-25px) rotate(calc(var(--rotation, 0deg) + 5deg)); 
+                opacity: 0.25;
+            }
+            66% { 
+                transform: translateY(-15px) rotate(calc(var(--rotation, 0deg) - 5deg)); 
+                opacity: 0.2;
+            }
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .logo-container {
+            margin-bottom: 2rem;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .logo-image {
+            max-width: 400px;
+            width: 80vw;
+            height: auto;
+            filter: drop-shadow(2px 4px 8px rgba(0, 0, 0, 0.4));
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            opacity: 0.8;
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, var(--primary-orange), var(--secondary-orange));
+            color: var(--text-light);
+            font-size: 1.3rem;
+            font-weight: 600;
+            padding: 1.2rem 3rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            transform: translateY(0);
+            animation: pulse 2s infinite;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Main content section */
+        .main-content {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+            animation: fadeInUp 0.8s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .section:nth-child(1) { animation-delay: 0.2s; }
+        .section:nth-child(2) { animation-delay: 0.4s; }
+        .section:nth-child(3) { animation-delay: 0.6s; }
+
+        .section-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--primary-orange);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        /* Action buttons grid */
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .action-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 140, 66, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary-orange);
+        }
+
+        .action-card:hover::before {
+            left: 100%;
+        }
+
+        .action-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1rem;
+            display: block;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: var(--primary-orange);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        /* Placeholder styles for icons - replace with actual images */
+        .menu-icon {
+            background-color: var(--primary-orange);
+        }
+
+        .instagram-icon {
+            background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+        }
+
+        .whatsapp-icon {
+            background-color: #25D366;
+        }
+
+        .action-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .action-link {
+            background: var(--primary-orange);
+            color: var(--text-light);
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .action-link:hover {
+            background: var(--secondary-orange);
+            transform: scale(1.05);
+        }
+
+        .instagram-link {
+            background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+        }
+
+        .whatsapp-link {
+            background: #25D366;
+        }
+
+        /* Schedule section */
+        .schedule {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 4rem;
+        }
+
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .schedule-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: linear-gradient(45deg, rgba(255, 140, 66, 0.1), rgba(255, 179, 102, 0.1));
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-orange);
+        }
+
+        .day {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .time {
+            font-weight: 500;
+            color: var(--primary-orange);
+        }
+
+        /* Map section */
+        .map-container {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-bottom: 4rem;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 450px;
+            border: none;
+        }
+
+        /* Contact info */
+        .contact-info {
+            text-align: center;
+            background: var(--dark-bg);
+            color: var(--text-light);
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 4rem;
+        }
+
+        .address {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .established {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            font-style: italic;
+        }
+
+        /* WhatsApp floating button */
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 30px;
+            right: 30px;
+            background: #25D366;
+            color: white;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 1.5rem;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            animation: bounce 2s infinite;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            animation: none;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .header {
+                min-height: 80vh;
+                padding: 1rem;
+            }
+
+            .logo-image {
+                max-width: 300px;
+                width: 90vw;
+            }
+
+            .main-content {
+                padding: 2rem 1rem;
+            }
+
+            .action-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .schedule-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .whatsapp-float {
+                width: 55px;
+                height: 55px;
+                bottom: 20px;
+                right: 20px;
+                font-size: 1.3rem;
+            }
+
+            .taco-float {
+                width: 60px;
+                height: 60px;
+            }
+        }
+
+        /* Improved Reservation Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 2rem auto;
+            padding: 2rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            animation: slideIn 0.3s ease-out;
+            min-height: fit-content;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .close:hover {
+            color: var(--primary-orange);
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary-orange);
+            font-family: 'Oswald', sans-serif;
+            position: sticky;
+            top: 0;
+            background: white;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .form-container {
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-orange);
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, var(--primary-orange), var(--secondary-orange));
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            position: sticky;
+            bottom: 0;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: var(--primary-orange);
+            font-weight: 600;
+            padding: 1rem;
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            color: #4CAF50;
+            font-weight: 600;
+            padding: 1rem;
+            background: rgba(76, 175, 80, 0.1);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            position: sticky;
+            top: 60px;
+            z-index: 9;
+        }
+
+        /* Mobile modal improvements */
+        @media (max-width: 768px) {
+            .modal-content {
+                margin: 1rem auto;
+                padding: 1.5rem;
+                width: 95%;
+                max-height: 85vh;
+            }
+
+            .form-container {
+                max-height: 55vh;
+            }
+
+            .modal-header {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="floating-tacos">
+            <div class="taco-float" style="--rotation: 15deg;"></div>
+            <div class="taco-float" style="--rotation: -20deg;"></div>
+            <div class="taco-float" style="--rotation: 45deg;"></div>
+            <div class="taco-float" style="--rotation: -10deg;"></div>
+            <div class="taco-float" style="--rotation: 30deg;"></div>
+            <div class="taco-float" style="--rotation: -35deg;"></div>
+        </div>
+        
+        <div class="hero-content">
+            <div class="logo-container">
+                <!-- Replace this placeholder with actual imagen1.png -->
+                <img src="imagen1.png" alt="Taco God Logo" class="logo-image" 
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div style="display: none; font-family: 'Oswald', sans-serif; font-size: clamp(4rem, 12vw, 8rem); font-weight: 700; color: var(--primary-orange); text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);">
+                    TACO GOD
+                </div>
+            </div>
+            <p class="subtitle">Buenos Aires | Since 2021</p>
+            <button class="cta-button" onclick="openReservationModal()">HACER RESERVA</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Quick Actions -->
+        <section class="section">
+            <div class="action-grid">
+                <div class="action-card">
+                    <div class="action-icon menu-icon">
+                        <img src="carta.png" alt="Menu" style="width:100%; height:100%; object-fit:contain;">
+                    </div>
+                    <h3 class="action-title">Nuestra Carta</h3>
+                    <a href="https://menu.fu.do/tacogod" target="_blank" class="action-link menu-link">Ver menú</a>
+                </div>
+                
+                <div class="action-card">
+                    <div class="action-icon instagram-icon">
+                        <img src="instagram.png" alt="Instagram" style="width:100%; height:100%; object-fit:contain;">
+                    </div>
+                    <h3 class="action-title">Instagram</h3>
+                    <a href="https://www.instagram.com/tacogod_ba?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="action-link instagram-link">@tacogod_ba</a>
+                </div>
+                
+                <div class="action-card">
+                    <div class="action-icon whatsapp-icon">
+                        <img src="whatsapp.png" alt="WhatsApp" style="width:100%; height:100%; object-fit:contain;">
+                    </div>
+
+                    <h3 class="action-title">WhatsApp</h3>
+                    <a href="https://wa.me/541150359099?text=Hola,%20quiero%20hacer%20una%20reserva" target="_blank" class="action-link whatsapp-link">Contactar</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Schedule -->
+        <section class="section">
+            <h2 class="section-title">HORARIOS</h2>
+            <div class="schedule">
+                <div class="schedule-grid">
+                    <div class="schedule-item">
+                        <span class="day">Lunes - Martes</span>
+                        <span class="time">18:00 - 00:00</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="day">Miércoles - Jueves</span>
+                        <span class="time">12:00 - 00:00</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="day">Viernes - Sábado</span>
+                        <span class="time">12:00 - 01:00</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="day">Domingo</span>
+                        <span class="time">12:00 - 00:00</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Location -->
+        <section class="section">
+            <h2 class="section-title">UBICACIÓN</h2>
+            <div class="contact-info">
+                <p class="address">📍 Federico Lacroze 3522, Chacarita<br>Buenos Aires, Argentina</p>
+                <p class="established">Sirviendo los mejores tacos desde 2021</p>
+            </div>
+            
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3284.9182035146973!2d-58.4509799!3d-34.5809362!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcb503bd74a05b%3A0x910c95737827cdc!2sTaco%20God!5e0!3m2!1ses-419!2sco!4v1769616889114!5m2!1ses-419!2sco" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </section>
+    </main>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/541150359099?text=Hola,%20quiero%20hacer%20una%20reserva" target="_blank" class="whatsapp-float" title="Contáctanos por WhatsApp">
+        <img src="whatsapp.png" alt="WhatsApp" style="width:100%; height:100%; object-fit:contain;">
+    </a>
+
+    
+
+    <!-- Improved Reservation Modal -->
+    <div id="reservationModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeReservationModal()">&times;</span>
+            
+            <h2 class="modal-header">HACER RESERVA</h2>
+            
+            <div class="success-message" id="successMessage">
+                ¡Reserva enviada correctamente! Te contactaremos pronto para confirmar.
+            </div>
+            
+            <div class="form-container">
+                <form id="reservationForm">
+                    <div class="form-group">
+                        <label for="name">Nombre completo *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Teléfono *</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email">
+                    </div>
+                    
+                    <!-- Honeypot: campo oculto para detectar bots -->
+                    <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                        <input type="text" name="website" tabindex="-1" autocomplete="off" placeholder="Leave this empty">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="date">Fecha *</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="time">Hora *</label>
+                        <select id="time" name="time" required>
+                            <option value="">Selecciona una hora</option>
+                            <option value="12:00">12:00</option>
+                            <option value="12:30">12:30</option>
+                            <option value="13:00">13:00</option>
+                            <option value="13:30">13:30</option>
+                            <option value="14:00">14:00</option>
+                            <option value="14:30">14:30</option>
+                            <option value="19:00">19:00</option>
+                            <option value="19:30">19:30</option>
+                            <option value="20:00">20:00</option>
+                            <option value="20:30">20:30</option>
+                            <option value="21:00">21:00</option>
+                            <option value="21:30">21:30</option>
+                            <option value="22:00">22:00</option>
+                            <option value="22:30">22:30</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="people">Número de personas *</label>
+                        <select id="people" name="people" required>
+                            <option value="">Selecciona</option>
+                            <option value="1">1 persona</option>
+                            <option value="2">2 personas</option>
+                            <option value="3">3 personas</option>
+                            <option value="4">4 personas</option>
+                            <option value="5">5 personas</option>
+                            <option value="6">6 personas</option>
+                            <option value="7+">7 o más personas</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="comments">Comentarios adicionales</label>
+                        <textarea id="comments" name="comments" rows="3" placeholder="Alergias, ocasión especial, etc."></textarea>
+                    </div>
+                    
+                    <div class="loading" id="loadingMessage">
+                        Enviando reserva...
+                    </div>
+                </form>
+            </div>
+            
+            <button type="submit" class="submit-btn" form="reservationForm">CONFIRMAR RESERVA</button>
+        </div>
+    </div>
+
+    <script>
+        // Initialize floating tacos with actual image
+        document.addEventListener('DOMContentLoaded', function() {
+            // Try to load the taco image for floating elements
+            const tacoFloats = document.querySelectorAll('.taco-float');
+            tacoFloats.forEach(taco => {
+                taco.style.backgroundImage = "url('imagen3.png')";
+            });
+        });
+
+        // Modal functionality
+        function openReservationModal() {
+            document.getElementById('reservationModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date').setAttribute('min', today);
+            
+            // Scroll to top of modal
+            const modalContent = document.querySelector('.modal-content');
+            modalContent.scrollTop = 0;
+        }
+
+        function closeReservationModal() {
+            document.getElementById('reservationModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('reservationModal');
+            if (event.target == modal) {
+                closeReservationModal();
+            }
+        }
+
+        // Prevent modal close when clicking inside modal content
+        document.querySelector('.modal-content').onclick = function(event) {
+            event.stopPropagation();
+        }
+
+        // Menu functionality (placeholder)
+        function openMenu() {
+            alert('¡Pronto tendremos nuestro menú digital disponible! Por ahora puedes ver nuestras especialidades en Instagram @tacogod_ba');
+        }
+
+        // Form submission to Google Sheets
+        document.getElementById('reservationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // HONEYPOT: Si el campo "website" está lleno, es un bot
+            if (data.website) {
+                console.log('Bot detectado - honeypot lleno');
+                // No hacer nada, silenciosamente ignorar
+                return;
+            }
+            
+            // Validación básica de fecha (no permitir fechas absurdas)
+            const selectedDate = new Date(data.date);
+            const currentYear = new Date().getFullYear();
+            if (selectedDate.getFullYear() > currentYear + 1 || selectedDate.getFullYear() < currentYear) {
+                alert('Por favor selecciona una fecha válida para tu reserva.');
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('loadingMessage').style.display = 'block';
+            document.querySelector('.submit-btn').style.display = 'none';
+            
+            // URL de tu Google Apps Script (ya configurado y funcionando)
+            const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxk18JzZr5cKZNFuA12UbfNjFoi5hXppjlH9fur2BBqizYqlBOLkWmDg0AlGYC-NX0T/exec';
+            
+            // Submit to Google Sheets
+            fetch(GOOGLE_SHEETS_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: data.name,
+                    phone: data.phone,
+                    email: data.email || 'No proporcionado',
+                    date: data.date,
+                    time: data.time,
+                    people: data.people,
+                    comments: data.comments || 'Sin comentarios',
+                    timestamp: new Date().toLocaleString('es-AR'),
+                    website: data.website || '' // Enviar honeypot para validación en servidor
+                })
+            })
+            .then(() => {
+                // Hide loading
+                document.getElementById('loadingMessage').style.display = 'none';
+                
+                // Show success message
+                document.getElementById('successMessage').style.display = 'block';
+                
+                // Hide form
+                document.querySelector('.form-container').style.display = 'none';
+                
+                // Reset and close modal after 3 seconds
+                setTimeout(() => {
+                    this.reset();
+                    document.querySelector('.form-container').style.display = 'block';
+                    document.getElementById('successMessage').style.display = 'none';
+                    document.querySelector('.submit-btn').style.display = 'block';
+                    closeReservationModal();
+                }, 3000);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Even with no-cors, we assume success since we can't read the response
+                document.getElementById('loadingMessage').style.display = 'none';
+                document.getElementById('successMessage').style.display = 'block';
+                document.querySelector('.form-container').style.display = 'none';
+                
+                setTimeout(() => {
+                    this.reset();
+                    document.querySelector('.form-container').style.display = 'block';
+                    document.getElementById('successMessage').style.display = 'none';
+                    document.querySelector('.submit-btn').style.display = 'block';
+                    closeReservationModal();
+                }, 3000);
+            });
+        });
+
+        // Smooth scrolling for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections for animation
+        document.querySelectorAll('.section').forEach(section => {
+            section.style.animationPlayState = 'paused';
+            observer.observe(section);
+        });
+
+        // Handle escape key to close modal
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeReservationModal();
+            }
+        });
+    </script>
+</body>
+</html>
