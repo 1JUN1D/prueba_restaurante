@@ -569,8 +569,40 @@
 </head>
 <body>
 
+
+    <!-- Header Section -->
+    <header class="header">
+        <div class="floating-tacos">
+            <div class="taco-float" style="--rotation: 15deg;"></div>
+            <div class="taco-float" style="--rotation: -20deg;"></div>
+            <div class="taco-float" style="--rotation: 45deg;"></div>
+            <div class="taco-float" style="--rotation: -10deg;"></div>
+            <div class="taco-float" style="--rotation: 30deg;"></div>
+            <div class="taco-float" style="--rotation: -35deg;"></div>
+        </div>
+        
+        <div class="hero-content">
+            <div class="logo-container">
+                <!-- Replace this placeholder with actual imagen1.png -->
+                <img src="imagen1.png" alt="Taco God Logo" class="logo-image" 
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div style="display: none; font-family: 'Oswald', sans-serif; font-size: clamp(4rem, 12vw, 8rem); font-weight: 700; color: var(--primary-orange); text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);">
+                    TACO GOD
+                </div>
+            </div>
+            <p class="subtitle">Buenos Aires | Since 2021</p>
+            <!-- Tally Button with data attributes -->
+             <button class="cta-button" data-tally-open="0Qe1MB" data-tally-layout="modal" data-tally-width="500" data-tally-emoji-text="🌮" data-tally-emoji-animation="wave">
+                HACER RESERVA
+            </button>
+            
+        </div>
+    </header>
+
     <!-- Main Content -->
     <main class="main-content">
+
+
         <!-- Quick Actions -->
         <section class="section">
             <div class="action-grid">
@@ -599,42 +631,6 @@
                 </div>
             </div>
         </section>
-    </main>
-
-
-    <!-- Header Section -->
-    <header class="header">
-        <div class="floating-tacos">
-            <div class="taco-float" style="--rotation: 15deg;"></div>
-            <div class="taco-float" style="--rotation: -20deg;"></div>
-            <div class="taco-float" style="--rotation: 45deg;"></div>
-            <div class="taco-float" style="--rotation: -10deg;"></div>
-            <div class="taco-float" style="--rotation: 30deg;"></div>
-            <div class="taco-float" style="--rotation: -35deg;"></div>
-        </div>
-        
-        <div class="hero-content">
-            <button class="cta-button" data-tally-open="0Qe1MB" data-tally-layout="modal" data-tally-width="500" data-tally-emoji-text="🌮" data-tally-emoji-animation="wave">
-                HACER RESERVA
-            </button>
-            <br><br><br>
-
-            <div class="logo-container">
-                <!-- Replace this placeholder with actual imagen1.png -->
-                <img src="imagen1.png" alt="Taco God Logo" class="logo-image" 
-                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                <div style="display: none; font-family: 'Oswald', sans-serif; font-size: clamp(4rem, 12vw, 8rem); font-weight: 700; color: var(--primary-orange); text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);">
-                    TACO GOD
-                </div>
-            </div>
-            <p class="subtitle">Buenos Aires | Since 2021</p>
-            <!-- Tally Button with data attributes -->
-            
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="main-content">
 
         <!-- Schedule -->
         <section class="section">
