@@ -706,7 +706,7 @@
        class="whatsapp-float" 
        id="btn-whatsapp-float"
        title="Contáctanos por WhatsApp"
-       onclick="trackConversion()">
+       onclick="event.preventDefault(); trackConversion(); var url = this.href; setTimeout(function(){ window.open(url, '_blank'); }, 300); return false;">
         <img src="whatsapp.png" alt="WhatsApp" style="width:100%; height:100%; object-fit:contain;">
     </a>
 
@@ -715,7 +715,8 @@
        target="_blank" 
        class="instagram-float" 
        id="btn-instagram-float"
-       title="Síguenos en Instagram">
+       title="Síguenos en Instagram"
+       onclick="event.preventDefault(); var url = this.href; setTimeout(function(){ window.open(url, '_blank'); }, 300); return false;">
         <img src="instagram.png" alt="Instagram" style="width:100%; height:100%; object-fit:contain;">
     </a>
 
@@ -742,10 +743,25 @@
                 taco.style.backgroundImage = "url('imagen3.png')";
             });
 
-            // Listener para cuando se complete el formulario de Tally
+            // Listener mejorado para cuando se complete el formulario de Tally
             window.addEventListener('message', function(e) {
-                if (e.data && e.data.event === 'Tally.FormSubmitted') {
-                    trackConversion();
+                if (e.data && typeof e.data === 'object') {
+                    // Tally puede enviar el evento en diferentes formatos
+                    if (e.data.event === 'Tally.FormSubmitted' || 
+                        e.data === 'Tally.FormSubmitted' ||
+                        (e.data.payload && e.data.payload.event === 'submit')) {
+                        
+                        // Disparar conversión de Google Ads
+                        trackConversion();
+                        
+                        // Disparar evento personalizado para GTM
+                        window.dataLayer = window.dataLayer || [];
+                        window.dataLayer.push({
+                            'event': 'Tally.FormSubmitted'
+                        });
+                        
+                        console.log('Formulario Tally enviado - Conversión registrada');
+                    }
                 }
             });
         });
