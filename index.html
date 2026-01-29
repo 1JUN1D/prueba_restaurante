@@ -728,7 +728,7 @@
         </div>
     </div>
 
-    <script>
+   <script>
         // Función de conversión de Google Ads
         function trackConversion() {
             gtag('event', 'conversion', {
@@ -743,27 +743,66 @@
                 taco.style.backgroundImage = "url('imagen3.png')";
             });
 
-            // Listener mejorado para cuando se complete el formulario de Tally
+            // LISTENER PARA TALLY - FORZAR EVENTO A GTM
             window.addEventListener('message', function(e) {
+                console.log('Mensaje recibido:', e.data); // Para debug
+                
                 if (e.data && typeof e.data === 'object') {
                     // Tally puede enviar el evento en diferentes formatos
                     if (e.data.event === 'Tally.FormSubmitted' || 
                         e.data === 'Tally.FormSubmitted' ||
                         (e.data.payload && e.data.payload.event === 'submit')) {
                         
-                        // Disparar conversión de Google Ads
-                        trackConversion();
+                        console.log('Evento Tally detectado:', e.data.event || e.data);
                         
-                        // Disparar evento personalizado para GTM
+                        // Push directo a dataLayer de GTM
                         window.dataLayer = window.dataLayer || [];
                         window.dataLayer.push({
                             'event': 'Tally.FormSubmitted'
                         });
                         
-                        console.log('Formulario Tally enviado - Conversión registrada');
+                        // Disparar conversión de Google Ads
+                        trackConversion();
+                        
+                        console.log('✅ Evento enviado a GTM: Tally.FormSubmitted');
+                        console.log('✅ Conversión de Google Ads disparada');
+                    }
+                    
+                    // Capturar también si Tally envía el evento con indexOf
+                    if (e.data.event && e.data.event.indexOf('Tally') !== -1) {
+                        console.log('Evento Tally detectado (indexOf):', e.data.event);
+                        
+                        // Push directo a dataLayer de GTM
+                        window.dataLayer = window.dataLayer || [];
+                        window.dataLayer.push({
+                            'event': 'Tally.FormSubmitted'
+                        });
+                        
+                        // Disparar conversión de Google Ads
+                        trackConversion();
+                        
+                        console.log('✅ Evento enviado a GTM: Tally.FormSubmitted');
+                        console.log('✅ Conversión de Google Ads disparada');
                     }
                 }
             });
+            
+            // TAMBIÉN capturar cuando se cierra el modal de Tally - Hook alternativo
+            setTimeout(function() {
+                if (typeof Tally !== 'undefined' && Tally.on) {
+                    Tally.on('submit', function() {
+                        console.log('Tally.on(submit) disparado');
+                        
+                        window.dataLayer = window.dataLayer || [];
+                        window.dataLayer.push({
+                            'event': 'Tally.FormSubmitted'
+                        });
+                        
+                        trackConversion();
+                        console.log('✅ Evento enviado a GTM vía Tally.on: Tally.FormSubmitted');
+                    });
+                }
+            }, 2000); // Esperar 2 segundos para que Tally se cargue
         });
 
         // Smooth scrolling for internal links
