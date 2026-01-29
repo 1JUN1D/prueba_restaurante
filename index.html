@@ -12,6 +12,32 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-T96CTCL4');</script>
+    <!-- End Google Tag Manager -->
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-812XJCGDWT"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-812XJCGDWT');
+    </script>
+
+    <!-- Google Ads Conversion Tracking -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17916321984"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'AW-17916321984');
+    </script>
+    
     <!-- Tally Script -->
     <script async src="https://tally.so/widgets/embed.js"></script>
     
@@ -430,7 +456,7 @@
             position: fixed;
             width: 60px;
             height: 60px;
-            bottom: 100px; /* Posicionado arriba del WhatsApp */
+            bottom: 100px;
             right: 30px;
             background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
             color: white;
@@ -445,22 +471,12 @@
             text-decoration: none;
             transition: all 0.3s ease;
             animation: bounce 2s infinite;
-            animation-delay: 0.5s; /* Pequeño delay para que no reboten al mismo tiempo */
+            animation-delay: 0.5s;
         }
 
         .instagram-float:hover {
             transform: scale(1.1);
             animation: none;
-        }
-
-        /* Responsive - agregar dentro del @media (max-width: 768px) */
-        .instagram-float {
-            width: 55px;
-            height: 55px;
-            bottom: 100px; /* Ajustado para móvil */
-            right: 20px;
-            font-size: 1.3rem;
-
         }
 
         @keyframes bounce {
@@ -506,14 +522,21 @@
                 font-size: 1.3rem;
             }
 
+            .instagram-float {
+                width: 55px;
+                height: 55px;
+                bottom: 100px;
+                right: 20px;
+                font-size: 1.3rem;
+            }
+
             .taco-float {
                 width: 60px;
                 height: 60px;
             }
         }
 
-
-        /* Menu Modal - versión mejorada para centrado */
+        /* Menu Modal */
         .menu-modal {
             display: none;
             position: fixed;
@@ -524,8 +547,8 @@
             height: 100%;
             background-color: rgba(0, 0, 0, 0.9);
             overflow: auto;
-            align-items: center; /* Centrado vertical */
-            justify-content: center; /* Centrado horizontal */
+            align-items: center;
+            justify-content: center;
         }
 
         .menu-image {
@@ -538,7 +561,7 @@
             position: relative;
             width: 90%;
             max-width: 800px;
-            margin: auto; /* Cambio aquí */
+            margin: auto;
         }
 
         .menu-close {
@@ -552,11 +575,10 @@
             z-index: 1001;
         }
 
-        /* Responsive para móvil */
         @media (max-width: 768px) {
             .menu-modal-content {
                 width: 95%;
-                margin: 20px auto; /* Pequeño margen en móvil */
+                margin: 20px auto;
             }
             
             .menu-close {
@@ -568,7 +590,10 @@
     </style>
 </head>
 <body>
-
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T96CTCL4"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 
     <!-- Header Section -->
     <header class="header">
@@ -583,7 +608,6 @@
         
         <div class="hero-content">
             <div class="logo-container">
-                <!-- Replace this placeholder with actual imagen1.png -->
                 <img src="imagen1.png" alt="Taco God Logo" class="logo-image" 
                      onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                 <div style="display: none; font-family: 'Oswald', sans-serif; font-size: clamp(4rem, 12vw, 8rem); font-weight: 700; color: var(--primary-orange); text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);">
@@ -591,17 +615,22 @@
                 </div>
             </div>
             <p class="subtitle">Buenos Aires | Since 2021</p>
-            <!-- Tally Button with data attributes -->
-             <button class="cta-button" data-tally-open="obG65M" data-tally-layout="modal" data-tally-width="500" data-tally-emoji-text="🌮" data-tally-emoji-animation="wave">
+            <button 
+                class="cta-button" 
+                data-tally-open="obG65M" 
+                data-tally-layout="modal" 
+                data-tally-width="500" 
+                data-tally-emoji-text="🌮" 
+                data-tally-emoji-animation="wave"
+                id="btn-hacer-reserva"
+                onclick="trackConversion()">
                 HACER RESERVA
             </button>
-            
         </div>
     </header>
 
     <!-- Main Content -->
     <main class="main-content">
-
 
         <!-- Quick Actions -->
         <section class="section">
@@ -611,7 +640,7 @@
                         <img src="carta.png" alt="Menu" style="width:100%; height:100%; object-fit:contain;">
                     </div>
                     <h3 class="action-title">Nuestra Carta</h3>
-                    <a href="https://menu.fu.do/tacogod/qr-menu" target="_blank" class="action-link menu-link">Ver la Carta</a>
+                    <a href="https://menu.fu.do/tacogod/qr-menu" target="_blank" class="action-link menu-link" id="btn-ver-carta">Ver la Carta</a>
                 </div>
                 
                 <div class="action-card">
@@ -619,7 +648,7 @@
                         <img src="delivery.png" alt="Instagram" style="width:100%; height:100%; object-fit:contain;">
                     </div>
                     <h3 class="action-title">Delivery</h3>
-                    <a href="https://menu.fu.do/tacogod" target="_blank" class="action-link instagram-link">Pedir</a>
+                    <a href="https://menu.fu.do/tacogod" target="_blank" class="action-link instagram-link" id="btn-delivery">Pedir</a>
                 </div>
                 
                 <div class="action-card">
@@ -627,7 +656,7 @@
                         <img src="taco.png" alt="WhatsApp" style="width:100%; height:100%; object-fit:contain;">
                     </div>
                     <h3 class="action-title">Menú Tenedor Libre</h3>
-                    <button class="action-link whatsapp-link" onclick="openMenuPopup()">Ver menú</button>
+                    <button class="action-link whatsapp-link" id="btn-ver-menu-tenedor" onclick="openMenuPopup()">Ver menú</button>
                 </div>
             </div>
         </section>
@@ -672,12 +701,21 @@
     </main>
 
     <!-- WhatsApp Floating Button -->
-    <a href="https://wa.me/541150359099?text=Hola,%20quiero%20hacer%20una%20reserva" target="_blank" class="whatsapp-float" title="Contáctanos por WhatsApp">
+    <a href="https://wa.me/541150359099?text=Hola,%20quiero%20hacer%20una%20reserva" 
+       target="_blank" 
+       class="whatsapp-float" 
+       id="btn-whatsapp-float"
+       title="Contáctanos por WhatsApp"
+       onclick="trackConversion()">
         <img src="whatsapp.png" alt="WhatsApp" style="width:100%; height:100%; object-fit:contain;">
     </a>
 
     <!-- Instagram Floating Button -->
-    <a href="https://www.instagram.com/tacogod_ba" target="_blank" class="instagram-float" title="Síguenos en Instagram">
+    <a href="https://www.instagram.com/tacogod_ba" 
+       target="_blank" 
+       class="instagram-float" 
+       id="btn-instagram-float"
+       title="Síguenos en Instagram">
         <img src="instagram.png" alt="Instagram" style="width:100%; height:100%; object-fit:contain;">
     </a>
 
@@ -690,12 +728,25 @@
     </div>
 
     <script>
+        // Función de conversión de Google Ads
+        function trackConversion() {
+            gtag('event', 'conversion', {
+                'send_to': 'AW-17916321984/2XckCJuRqe8bEMDBld9C'
+            });
+        }
+
         // Initialize floating tacos with actual image
         document.addEventListener('DOMContentLoaded', function() {
-            // Try to load the taco image for floating elements
             const tacoFloats = document.querySelectorAll('.taco-float');
             tacoFloats.forEach(taco => {
                 taco.style.backgroundImage = "url('imagen3.png')";
+            });
+
+            // Listener para cuando se complete el formulario de Tally
+            window.addEventListener('message', function(e) {
+                if (e.data && e.data.event === 'Tally.FormSubmitted') {
+                    trackConversion();
+                }
             });
         });
 
@@ -727,7 +778,6 @@
             });
         }, observerOptions);
 
-        // Observe all sections for animation
         document.querySelectorAll('.section').forEach(section => {
             section.style.animationPlayState = 'paused';
             observer.observe(section);
@@ -736,7 +786,7 @@
         // Menu popup functionality
         function openMenuPopup() {
             const modal = document.getElementById('menuModal');
-            modal.style.display = 'flex'; // Cambio de 'block' a 'flex'
+            modal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
         }
 
@@ -745,14 +795,12 @@
             document.body.style.overflow = 'auto';
         }
 
-        // Close when clicking outside the image
         window.onclick = function(event) {
             const modal = document.getElementById('menuModal');
             if (event.target == modal) {
                 closeMenuPopup();
             }
         }
-
     </script>
 </body>
 </html>
