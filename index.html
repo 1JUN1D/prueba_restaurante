@@ -728,7 +728,7 @@
         </div>
     </div>
 
-    <script>
+<script>
         // Función de conversión de Google Ads
         function trackConversion() {
             gtag('event', 'conversion', {
@@ -742,33 +742,41 @@
             tacoFloats.forEach(taco => {
                 taco.style.backgroundImage = "url('imagen3.png')";
             });
+        });
 
-            // LISTENER PARA TALLY - FORMATO CORRECTO
-            window.addEventListener('message', function(e) {
-                console.log('Mensaje recibido:', e.data); // Para debug
-                
-                if (e.data && typeof e.data === 'object') {
-                    // FORMATO CORRECTO: Tally envía {event: "Tally.FormSubmitted", payload: {...}}
-                    if (e.data.event === 'Tally.FormSubmitted' && e.data.payload) {
-                        console.log('✅ Evento Tally detectado:', e.data.event);
-                        console.log('📋 Datos del formulario:', e.data.payload);
-                        
-                        // Push directo a dataLayer de GTM
+        // LISTENER PARA TALLY - VERSIÓN SIMPLIFICADA Y DIRECTA
+        window.addEventListener('message', function(e) {
+            // Log de TODOS los mensajes para debug
+            if (e.data && typeof e.data === 'string') {
+                try {
+                    var parsed = JSON.parse(e.data);
+                    if (parsed.event === 'Tally.FormSubmitted') {
+                        console.log('✅ Tally FormSubmitted detectado (string parseado)');
                         window.dataLayer = window.dataLayer || [];
-                        window.dataLayer.push({
-                            'event': 'Tally.FormSubmitted',
-                            'formId': e.data.payload.formId,
-                            'respondentId': e.data.payload.respondentId
-                        });
-                        
-                        // Disparar conversión de Google Ads
+                        window.dataLayer.push({ 'event': 'Tally.FormSubmitted' });
                         trackConversion();
-                        
-                        console.log('✅ Evento enviado a GTM: Tally.FormSubmitted');
-                        console.log('✅ Conversión de Google Ads disparada');
                     }
+                } catch(err) {
+                    // No es JSON, ignorar
                 }
-            });
+            }
+            
+            // Formato objeto directo
+            if (e.data && typeof e.data === 'object' && e.data.event === 'Tally.FormSubmitted') {
+                console.log('✅ Tally FormSubmitted detectado (objeto)');
+                console.log('📋 Payload:', e.data.payload);
+                
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    'event': 'Tally.FormSubmitted',
+                    'formId': e.data.payload ? e.data.payload.formId : null,
+                    'respondentId': e.data.payload ? e.data.payload.respondentId : null
+                });
+                
+                trackConversion();
+                console.log('✅ Evento enviado a dataLayer');
+                console.log('✅ Conversión de Google Ads disparada');
+            }
         });
 
         // Smooth scrolling for internal links
@@ -822,6 +830,7 @@
                 closeMenuPopup();
             }
         }
-    </script>
+</script>
+
 </body>
 </html>
